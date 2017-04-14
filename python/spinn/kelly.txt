@@ -1,0 +1,9 @@
+RNN baseline
+
+
+Train Default Model:
+
+PYTHONPATH=python
+python2 -m spinn.models.fat_classifier --data_type listops --training_data_path /Users/kellyzhang/Documents/spinn/python/spinn/data/listops/train.tsv  --eval_data_path /Users/kellyzhang/Documents/spinn/python/spinn/data/listops/test.tsv  --word_embedding_dim 50 --model_dim 50 --model_type SOFTSPINN --load_best False --embedding_keep_rate 1.0 --learning_rate 4.14942914454e-05
+
+Train Model with Strengths

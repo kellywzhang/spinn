@@ -1,0 +1,26 @@
+I spent some time just now working out what a soft shift-reduce sequence would actually do.
+
+Observation: A naïve soft reduce is pathological. In particular, the problem is in how you find the two vectors that you compose. If, to reduce with strength s_r, you pop* with strength s_r to get v_2 and pop again with s_r to get v_1, then compose v_1 and v_2, the smooth approximation breaks down weirdly for small s_r: If s_r is less than 0.5 and the existing stack is a hard stack, than you wind up composing part of the top of the stack with itself.
+
+Proposed solution:
+
+To update the stack: 
+Compute s_r and s_s with a softmax
+Reduce with strength s_r
+Shift with strength s_s
+
+To shift with strength s_s (easy):
+a = pop* from buffer with s_s
+push a to S with s_s
+
+To reduce with strength s_r (harder):
+v_2 = pop from stack with 1
+v_1 = pop from stack with 1
+push v_1 to S with (1 - s_r)
+push v_2 to S with (1 - s_r)
+c = compose(v_1, v_2)
+push c to S with (s_r)
+
+This preserves an important property (Bowman's desideratum): If you have a normal hard stack, and you perform operation (s_r reduce, s_s shift), then (s_s reduce, s_r reduce) — i.e., you perform an operation that is soft, but skewed in the opposite way – then you get back to a stack that is perfectly hard, except that exactly the top two units worth of materials are mushy. So, if mushy elements are what you wanted, you can continue as normal, and build a healthy tree around them.
+
+Popping for this purpose could actually look different from what's in the paper. TBD. Most importantly, you want to remove s_r units of activation from the stack. The results that you use is the linear combination of all of the content that you removed (which is different from what a peek would show, since peeks are always strength 1), but you then have to rescale that result up to 1 unit of mass so that it forms a valid input to the composition function.
