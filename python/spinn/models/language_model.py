@@ -23,6 +23,7 @@ from spinn.util.data import SimpleProgressBar
 from spinn.models.base import get_data_manager
 from spinn.models.base import flag_defaults #, get_flags
 from spinn.models.base import sequential_only, get_batch
+from spinn.models.base import get_checkpoint_path
 
 FLAGS = gflags.FLAGS
 
@@ -138,16 +139,6 @@ def get_flags():
     gflags.DEFINE_boolean("eval_report_use_preds", True, "If False, use the given transitions in the report, "
         "otherwise use predicted transitions. Note that when predicting transitions but not using them, the "
         "reported predictions will look very odd / not valid.")
-
-def get_checkpoint_path(ckpt_path, experiment_name, suffix=".ckpt", best=False):
-    # Set checkpoint path.
-    if ckpt_path.endswith(".ckpt") or ckpt_path.endswith(".ckpt_best"):
-        checkpoint_path = ckpt_path
-    else:
-        checkpoint_path = os.path.join(ckpt_path, experiment_name + suffix)
-    if best:
-        checkpoint_path += "_best"
-    return checkpoint_path
 
 def run(only_forward=False):
     logger = afs_safe_logger.Logger(os.path.join(FLAGS.log_path, FLAGS.experiment_name) + ".log")

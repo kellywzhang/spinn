@@ -1,0 +1,7 @@
+
+
+
+
+python -m spinn.models.language_model --data_type snli --training_data_path /Users/kellyzhang/Documents/spinn/python/spinn/data/snli/snli_1.0/snli_1.0_dev.jsonl \
+       --eval_data_path /Users/kellyzhang/Documents/spinn/python/spinn/data/snli/snli_1.0/snli_1.0_dev.jsonl --embedding_data_path spinn/tests/test_embedding_matrix.5d.txt \
+       --model_dim 10 --word_embedding_dim 5 --log_path ../logs
