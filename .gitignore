@@ -32,3 +32,6 @@ writing/gist/gist.fdb_latexmk
 writing/gist/gist.fls
 
 writing/hard_stack_paper/paper.pdf
+
+# kelly
+python/spinn/data/snli/snli_1.0/
